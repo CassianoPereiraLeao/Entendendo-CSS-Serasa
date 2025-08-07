@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo usando express</title>
+    <style>
+        #table {
+            border: 10px solid #CCC;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            image-rendering: -moz-crisp-edges;
+            width: 400px;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <canvas id="table" width="10" height="10"></canvas>
+    </main>
+    <script>
+        const table = document.getElementById("table");
+        const context = table.getContext("2d");
+        
+        const game = {
+            players: {
+                'player1': { x: 1, y: 1 },
+                'player2': { x: 9, y: 9 }
+            },  
+            fruits: {
+                'fruit1': { x: 5, y: 5 }
+            }
+        };
+
+        document.addEventListener("keydown", handleKeydown);
+        const myPlayerId = game.players["player1"];
+
+        function handleKeydown(events) {
+            const keyPressed = event.key;
+
+            if(keyPressed === "w"){
+                myPlayerId.y--;
+                return;
+            }
+
+            if(keyPressed === "s") {
+                myPlayerId.y++;
+                return;
+            }
+
+            if(keyPressed === "a"){
+                myPlayerId.x--;
+                return;
+            }
+
+            if(keyPressed === "d") {
+                myPlayerId.x++;
+                return;
+            }
+        }
+
+        renderGame();
+
+        function renderGame() {
+            context.fillStyle = 'white';
+            context.clearRect(0, 0, 10, 10);
+            for(const playerId in game.players) {
+                const player = game.players[playerId]
+                context.fillStyle = 'black';
+                context.fillRect(player.x, player.y, 1, 1);
+            }
+
+            for(const fruitId in game.fruits) {
+                const fruit = game.fruits[fruitId]
+                context.fillStyle = 'green';
+                context.fillRect(fruit.x, fruit.y, 1, 1);
+            }
+
+            requestAnimationFrame(renderGame);
+        }
+    </script>
+</body>
+</html>
